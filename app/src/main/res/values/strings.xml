@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">IdeaofTourism</string>
+    <string name="start_navi">Start Navigation</string>
+    <string name="stop_navi">Stop Navigation</string>
+    <string name="title_activity_main">Idea of Tourism</string>
+    <string name="ideaoftourism">We have an Idea of Tourism!</string>
+    <string name="looking">What are you looking for?</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="touristmode">Tourist mode</string>
+    <string name="hologrammode">Hologram mode</string>
+    <string name="route">Route</string>
+    <string name="view">View</string>
+    <string name="viewtype">Change the color of your view</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="routetype">Choose your route type</string>
+    <string name="turnon_tourist">Turn on to enable automatic route\ncalculations</string>
+    <string name="turnon_hologram">Turn on to view your maps adapted for\nIdea Hologram View</string>
+    <string name="most">Most sights</string>
+    <string name="three">Three sights</string>
+    <string name="one">One of a type</string>
+    <string name="park">Parks</string>
+    <string name="historical">Historical Venues</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="statues">Statues</string>
+    <string name="hologram">Holograms</string>
+    <string name="points">Sightseeing points with\nhologram displays</string>
+    <string name="around">Around?</string>
+    <string name="specify">Specify a location to look around of</string>
+    <string name="howfar">How far away?</string>
+    <string name="far">Select the radius of the search</string>
+    <string name="done">DONE!</string>
+    <string name="load">Load saved route</string>
+    <string name="or">or</string>
+
+    <string-array name="radius">
+        <item>0.5 km</item>
+        <item>1 km</item>
+        <item>2 km</item>
+    </string-array>
+
+</resources>
