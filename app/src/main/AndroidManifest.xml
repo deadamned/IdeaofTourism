@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.idea.xxx.ideaoftourism">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.here.android.maps.appid"
+            android:value="ja5RGaGYrUfrWaMoGcL2" />
+        <meta-data
+            android:name="com.here.android.maps.apptoken"
+            android:value="Z90jAAJZw65Mmb2HfPOehw" />
+        <meta-data
+            android:name="com.here.android.maps.license.key"
+            android:value="LWPK2oQD/m2Q02y4Y+PYqsOSPbgpa4DwUfeblhqYYoEuLmWNIJ9MCXFYU2wPdXhEgg7g39LwWSq29bAiCkHyLkftG2vV6E9qXfxO/TUuDy9H+pBOSnwtO/jWdXXc+1I6eoa+NeffJ4mR1e/uFvSeP1wmuToc6uL22aWGAbBHA2yKxWOtGreiGeerqUEv0UjnaXsbT4XSaez4RGMYr4nlLZgfASv4vv5UQmjIC0pmiuePwP617ReF0ShfFJIPNtTChJ7tboZ6tjIvge5QzOm7k+J9P7DyZNmK49R2GMyPZ+2peikc2ozTYS0C/5YCGOXTIC82ZBX3Kbqc3jijfHSMKAFRaK2Ly2rAAK3fWlCTWA/nnNRiNDFmrlryhRca8fu8Jr2qeZnLr0AB6s/oGYad+Omk92HXt2djatU41N5qlIUtx5sn2CpADD7NKwZ8BRJvWfRBad+6FPvqAW/lPFNq4dLwWRugVxP5gdN5moLuWU/R3ZVYZaoQ7lg5ieeu3aUcxIyZdPvahvN2G8KNjdbHELpaFWQKMBRdyCUqvSizgRn8JOKarzP2xUxNVh2y0SybB1OLtAWogDJCQys6bm3J9IW7DAwLivhEBhz7hbAkwWtYFsix2ca2or2j4z4L2Nn9krHM5Uxxf6J0S7LMddA6X+Yxf5KliuuSb7QgHINhe98=" />
+
+        <service
+            android:name="com.here.android.mpa.service.MapService"
+            android:exported="false"
+            android:label="MapService">
+            <intent-filter>
+                <action android:name="com.idea.xxx.ideaoftourism.MapService" />
+            </intent-filter>
+        </service>
+        <service android:name=".ForegroundService" />
+
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".DirectionsActivity"
+            android:parentActivityName=".StartActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".ResultListActivity"></activity>
+    </application>
+
+</manifest>
