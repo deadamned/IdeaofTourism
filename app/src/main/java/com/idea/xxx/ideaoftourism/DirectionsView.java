@@ -13,6 +13,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -80,5 +82,19 @@ public class DirectionsView {
         Spinner spinnerradius = m_activity.findViewById(R.id.radius);
         ArrayAdapter<String> spinnerradiusArrayAdapter = new ArrayAdapter<>(m_activity, android.R.layout.simple_spinner_dropdown_item, m_activity.getResources().getStringArray(R.array.radius));
         spinnerradius.setAdapter(spinnerradiusArrayAdapter);
+
+        AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(m_activity.getApplicationContext(), spinnerradius.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        spinnerradius.setOnItemSelectedListener(onItemSelectedListener);
     }
 }
