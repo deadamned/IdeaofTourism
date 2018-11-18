@@ -1,50 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
 
-    <!-- Map Fragment embedded with the map object -->
+        <!-- Map Fragment embedded with the map object -->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
-        <Button
-            android:text="Search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchRequestBtn"
-            android:layout_weight="1" />
+            <Button
+                android:text="Search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchRequestBtn"
+                android:layout_weight="1" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <fragment
-            class="com.here.android.mpa.mapping.MapFragment"
-            android:id="@+id/mapfragment"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_weight="1">
+
+            <fragment
+                class="com.here.android.mpa.mapping.MapFragment"
+                android:id="@+id/mapfragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:text="Result List"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/resultListBtn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="292dp"
+        android:layout_height="212dp"
+        android:layout_gravity="center"
+        android:id="@+id/placeDetailLayout"
+        android:weightSum="1"
+        android:background="?attr/colorPrimary">
 
         <Button
-            android:text="Result List"
-            android:layout_width="wrap_content"
+            android:text="Close"
+            android:layout_width="68dp"
             android:layout_height="wrap_content"
-            android:id="@+id/resultListBtn"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:id="@+id/closeLayoutButton" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/placeName"
+            android:layout_weight="0.5"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/placeLocation"
+            android:layout_weight="0.5"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</FrameLayout>

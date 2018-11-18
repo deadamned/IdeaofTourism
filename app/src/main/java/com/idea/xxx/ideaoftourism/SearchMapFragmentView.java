@@ -4,25 +4,32 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
+import com.here.android.mpa.common.ViewObject;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapObject;
 import com.here.android.mpa.search.DiscoveryResult;
 import com.here.android.mpa.search.DiscoveryResultPage;
 import com.here.android.mpa.search.ErrorCode;
+import com.here.android.mpa.search.Place;
 import com.here.android.mpa.search.PlaceLink;
+import com.here.android.mpa.search.PlaceRequest;
 import com.here.android.mpa.search.ResultListener;
 import com.here.android.mpa.search.SearchRequest;
 
@@ -38,9 +45,36 @@ class SearchMapFragmentView {
     private Map m_map;
     private Button m_placeDetailButton;
     private List<MapObject> m_mapObjectList = new ArrayList<>();
+    private LinearLayout m_placeDetailLayout;
+    private TextView m_placeName;
+    private TextView m_placeLocation;
+
+    private void initUIElements() {
+        /*
+         * An overlay layout will pop up to display some place details.To simplify the logic, this
+         * layout is currently not being handled for screen rotation event.It disappears if the
+         * screen is being rotated.
+         */
+        m_placeDetailLayout = m_activity.findViewById(R.id.placeDetailLayout);
+        m_placeDetailLayout.setVisibility(View.GONE);
+
+        m_placeName = m_activity.findViewById(R.id.placeName);
+        m_placeLocation = m_activity.findViewById(R.id.placeLocation);
+
+        Button closePlaceDetailButton = m_activity.findViewById(R.id.closeLayoutButton);
+        closePlaceDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (m_placeDetailLayout.getVisibility() == View.VISIBLE) {
+                    m_placeDetailLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
 
     public SearchMapFragmentView(SearchActivity searchActivity) {
         m_activity = searchActivity;
+        initUIElements();
         initMapFragment();
         initSearchControlButton();
         initResultListButton();
@@ -209,7 +243,97 @@ class SearchMapFragmentView {
 
     private void addMarkerAtPlace(PlaceLink placeLink) {
         MapMarker mapMarker = new MapMarker();
-        mapMarker.setCoordinate(new GeoCoordinate(placeLink.getPosition())); m_map.addMapObject(mapMarker); m_mapObjectList.add(mapMarker); }
+        mapMarker.setCoordinate(new GeoCoordinate(placeLink.getPosition()));
+        m_map.addMapObject(mapMarker);
+        m_mapObjectList.add(mapMarker);
+
+        MapGesture.OnGestureListener onGestureListener = new MapGesture.OnGestureListener() {
+            @Override
+            public void onPanStart() {
+
+            }
+
+            @Override
+            public void onPanEnd() {
+
+            }
+
+            @Override
+            public void onMultiFingerManipulationStart() {
+
+            }
+
+            @Override
+            public void onMultiFingerManipulationEnd() {
+
+            }
+
+            @Override
+            public boolean onMapObjectsSelected(List<ViewObject> list) {
+                for (ViewObject viewObject : list) {
+                    MapObject mapObject = (MapObject) viewObject;
+
+                    if (mapObject.equals(mapMarker)) {
+                        PlaceRequest placeRequest = placeLink.getDetailsRequest();
+                        placeRequest.execute(m_placeResultListener);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onTapEvent(PointF pointF) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTapEvent(PointF pointF) {
+                return false;
+            }
+
+            @Override
+            public void onPinchLocked() {
+
+            }
+
+            @Override
+            public boolean onPinchZoomEvent(float v, PointF pointF) {
+                return false;
+            }
+
+            @Override
+            public void onRotateLocked() {
+
+            }
+
+            @Override
+            public boolean onRotateEvent(float v) {
+                return false;
+            }
+
+            @Override
+            public boolean onTiltEvent(float v) {
+                return false;
+            }
+
+            @Override
+            public boolean onLongPressEvent(PointF pointF) {
+                return false;
+            }
+
+            @Override
+            public void onLongPressRelease() {
+
+            }
+
+            @Override
+            public boolean onTwoFingerTapEvent(PointF pointF) {
+                return false;
+            }
+        };
+        getMapFragment().getMapGesture().addOnGestureListener(onGestureListener, 0, true);
+    }
     private void cleanMap() {
         if (!m_mapObjectList.isEmpty()) {
             m_map.removeMapObjects(m_mapObjectList);
@@ -217,5 +341,27 @@ class SearchMapFragmentView {
         }
         //m_placeDetailButton.setVisibility(View.GONE); }
     }
+
+    private ResultListener<Place> m_placeResultListener = new ResultListener<Place>() {
+        @Override
+        public void onCompleted(Place place, ErrorCode errorCode) {
+            if (errorCode == ErrorCode.NONE) {
+                /*
+                 * No error returned,let's show the name and location of the place that just being
+                 * selected.Additional place details info can be retrieved at this moment as well,
+                 * please refer to the HERE Android SDK API doc for details.
+                 */
+                m_placeDetailLayout.setVisibility(View.VISIBLE);
+                m_placeName.setText(place.getName());
+                GeoCoordinate geoCoordinate = place.getLocation().getCoordinate();
+                m_placeLocation.setText(geoCoordinate.toString());
+            } else {
+                Toast.makeText(m_activity.getApplicationContext(),
+                        "ERROR:Place request returns error: " + errorCode, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        }
+    };
 }
 
