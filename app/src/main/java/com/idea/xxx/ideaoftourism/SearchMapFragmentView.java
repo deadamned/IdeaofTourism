@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import com.here.android.mpa.mapping.MapObject;
+import com.here.android.mpa.mapping.MapOverlay;
 import com.here.android.mpa.search.DiscoveryResult;
 import com.here.android.mpa.search.DiscoveryResultPage;
 import com.here.android.mpa.search.ErrorCode;
@@ -243,9 +245,16 @@ class SearchMapFragmentView {
 
     private void addMarkerAtPlace(PlaceLink placeLink) {
         MapMarker mapMarker = new MapMarker();
-        mapMarker.setCoordinate(new GeoCoordinate(placeLink.getPosition()));
+        GeoCoordinate geoCoordinate = new GeoCoordinate(placeLink.getPosition());
+        mapMarker.setCoordinate(geoCoordinate);
         m_map.addMapObject(mapMarker);
         m_mapObjectList.add(mapMarker);
+
+        TextView textView = new TextView(m_activity.getApplicationContext());
+        textView.setText(placeLink.getTitle());
+        MapOverlay mapOverlay = new MapOverlay(textView, geoCoordinate);
+        mapOverlay.setAnchorPoint(new PointF(0, -70));
+        m_map.addMapOverlay(mapOverlay);
 
         MapGesture.OnGestureListener onGestureListener = new MapGesture.OnGestureListener() {
             @Override
