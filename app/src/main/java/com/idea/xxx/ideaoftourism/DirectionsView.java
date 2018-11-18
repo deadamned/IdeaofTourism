@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ import java.util.Locale;
 public class DirectionsView {
     private Activity m_activity;
     private TextInputEditText text;
-
+    private Button doneButton;
     public DirectionsView(DirectionsActivity directionsActivity) {
         m_activity = directionsActivity;
         initDirections();
