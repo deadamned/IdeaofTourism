@@ -13,10 +13,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +30,11 @@ public class DirectionsView {
     private Activity m_activity;
     private TextInputEditText text;
     private Button doneButton;
+    private CheckBox parks;
+    private CheckBox historical;
+    private CheckBox restaurants;
+    private CheckBox statues;
+    private CheckBox holograms;
     public DirectionsView(DirectionsActivity directionsActivity) {
         m_activity = directionsActivity;
         initDirections();
@@ -35,6 +42,34 @@ public class DirectionsView {
 
     private void initDirections() {
         text = m_activity.findViewById(R.id.text);
+        doneButton = m_activity.findViewById(R.id.button);
+        parks = m_activity.findViewById(R.id.checkBox_parks);
+        historical = m_activity.findViewById(R.id.checkBox_historical);
+        restaurants = m_activity.findViewById(R.id.checkBox_restaurants);
+        statues = m_activity.findViewById(R.id.checkBox_statues);
+        holograms = m_activity.findViewById(R.id.checkBox_holograms);
+        doneButton.setOnClickListener(v -> {
+            Intent intent = new Intent(m_activity,SearchActivity.class);
+            intent.putExtra("adress",text.getText().toString());
+            intent.putExtra("parks",parks.isChecked());
+            intent.putExtra("historical",historical.isChecked());
+            intent.putExtra("restaurants",restaurants.isChecked());
+            intent.putExtra("statues",statues.isChecked());
+            intent.putExtra("holograms",holograms.isChecked());
+            m_activity.startActivity(intent);
+        });
+        text.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(text.getText().toString().equals(""))
+                {
+                    doneButton.setEnabled(false);
+                }
+                else
+                    doneButton.setEnabled(true);
+                return false;
+            }
+        });
         Intent intent = new Intent(m_activity, SearchActivity.class);
         m_activity.startActivity(intent);
 
